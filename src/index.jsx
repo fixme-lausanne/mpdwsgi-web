@@ -1,5 +1,7 @@
 /*jshint esnext: true*/
 /*global require,module*/
+require('babelify/polyfill');
+
 var React = require('react'),
     Router = require('react-router'),
     csp = require('js-csp'),

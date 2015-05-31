@@ -34,17 +34,17 @@
     "superagent": "^1.2.0"
   },
   "devDependencies": {
+    "babelify": "^6.1.2",
     "browser-sync": "^2.7.6",
     "browserify": "^10.2.3",
     "jest-cli": "^0.4.5",
     "onchange": "^1.1.0",
     "react-tools": "^0.13.3",
-    "reactify": "^1.1.1",
     "watchify": "^3.2.1"
   },
   "browserify": {
     "transform": [
-      "reactify"
+        "babelify"
     ]
   },
   "jest": {
