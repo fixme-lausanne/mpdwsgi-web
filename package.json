@@ -20,7 +20,7 @@
     "watch:js": "watchify -vd -e src/index.jsx -o static/output/bundle.js",
     "watch:css": "echo -e \"warning: \\033[0;33m empty script \\033[0m\"",
     "watch": "npm run watch:js & npm run watch:css",
-    "browser": "browser-sync start --server static --files \"static/*.html, static/output/*.js, static/css/*.css",
+    "browser": "browser-sync start --server static --files \"static/*.html, static/output/*.js, static/css/*.css\"",
     "prebuild:js": "mkdir -p static/output",
     "prebuild:css": "mkdir -p static/output",
     "prewatch:js": "mkdir -p static/output",
