@@ -32,7 +32,7 @@ class ViewCurrent extends React.Component {
     }
 
     renderSongs(songs) {
-        return [].map.call(songs, (song) => {
+        return [].map.call(songs || [], (song) => {
             return (
                 <li className="song row">
                     <div className="cover one column">{song.cover}</div>
