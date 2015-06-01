@@ -192,6 +192,11 @@ aside.menu header:hover .brand .flip {
   cursor: pointer;
 }
 
+.menu li a {
+  width: 100%;
+  text-align: left;
+}
+
 /* -------------------
  * Section: Main panel
  * -------------------
