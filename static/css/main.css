@@ -51,6 +51,10 @@ a, a:hover {
   animation: sk-pulseScaleOut 1s infinite ease-in-out;
 }
 
+.loading content {
+  overflow: hidden;
+}
+
 @keyframes sk-pulseScaleOut {
   0% {
     -webkit-transform: scale(0);
@@ -225,6 +229,9 @@ main .content {
   padding-left: 80px;
   padding-right: 70px;
   color: white;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  box-shadow: inset 0px 10px 10px -13px black
 }
 
 /* Search bar */

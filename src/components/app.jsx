@@ -21,13 +21,38 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            contentHeight: null,
+
             currentSong: null,
             currentPlaylist: null,
             isPlaying: false
         };
     }
 
+    handleResize() {
+        let playerNode = React.findDOMNode(this.refs.player),
+            mainHeaderNode = React.findDOMNode(this.refs.mainHeader),
+            contentNode = React.findDOMNode(this.refs.content);
+        let contentComputedStyles = getComputedStyle(contentNode),
+            contentPaddingTop = parseInt(
+                contentComputedStyles['padding-top'], 10
+        ), contentPaddingBottom = parseInt(
+            contentComputedStyles['padding-bottom'], 10
+        );
+
+        this.setState({
+            contentHeight: window.innerHeight -
+                mainHeaderNode.clientHeight -
+                playerNode.clientHeight -
+                contentPaddingBottom -
+                contentPaddingTop
+        });
+    }
+
     componentDidMount() {
+        this.handleResize();
+        addEventListener('resize', this.handleResize.bind(this));
+
         let initialData = this.props.initialData['appRoot'];
         let {currentSong, currentPlaylist, status} = initialData;
 
@@ -38,26 +63,34 @@ export default class App extends React.Component {
         });
     }
 
+    componentWillUnmount() {
+        removeEventListener('resize', this.handleResize.bind(this));
+    }
+
     render() {
+        let contentStyles = {
+            height: this.state.contentHeight
+        };
         return (
             <div>
                 <CSSTransitionGroup transitionName="screen"
                                     transitionAppear={true}>
                     <SideMenu />
                     <main>
-                        <header>
+                        <header ref="mainHeader">
                             <div className="search">
                                 <img className="icon" src="images/icon-search.png"/>
                                 <input type="text" placeholder="Search terms"/>
                             </div>
                         </header>
 
-                        <div className="content">
+                        <div className="content" ref="content"
+                             style={contentStyles}>
                             <RouteHandler data={this.state}/>
                         </div>
                     </main>
                 </CSSTransitionGroup>
-                <Player song={this.state.currentSong}
+                <Player ref="player" song={this.state.currentSong}
                         isPlaying={this.state.isPlaying}/>
             </div>
         );
