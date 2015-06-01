@@ -359,7 +359,7 @@ main .content {
 }
 
 .player-actions svg:hover g path {
-  fill: rgb(255, 85, 85);
+  fill: rgb(230, 230, 230);
 }
 
 .player-actions .pause-play {
