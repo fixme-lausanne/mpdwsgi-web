@@ -246,7 +246,6 @@ main .content {
   position: absolute;
   border: 2px solid white;
   border-radius: 58px;
-  background-image: url(/images/pink_floyd-dark_side_of_the_moon.jpg);
   background-size: cover;
 }
 
