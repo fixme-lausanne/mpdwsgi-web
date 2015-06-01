@@ -14,13 +14,14 @@ import App from './components/app.jsx';
 import ViewCurrent from './components/view_current.jsx';
 import Albums from './components/Albums.jsx';
 import Artists from './components/Artists.jsx';
+import Playlists from './components/Playlists.jsx';
 
 let routes = (
     <Route name="appRoot" path="/" handler={App}>
         <DefaultRoute name="current" handler={ViewCurrent} />
         <Route name="albums" handler={Albums}/>
         <Route name="artists" handler={Artists}/>
-        <Route name="playlists" handler={ViewCurrent}/>
+        <Route name="playlists" handler={Playlists}/>
         <NotFoundRoute handler={ViewCurrent} />
     </Route>
 );
