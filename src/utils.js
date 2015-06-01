@@ -11,3 +11,27 @@ export function decodeParams(params) {
         return {};
     }
 }
+
+export function pad(str, size) {
+    str = `${str}`;
+    if (typeof(size) !== 'number'){
+        size = 2;
+    }
+    while (str.length < size) {
+        str = '0' + str;
+    }
+    return str;
+}
+
+export function formatTime(time) {
+    let hours = Math.floor(time / 3600),
+        hours_rem = time % 3600,
+        minutes = Math.floor(hours_rem / 60),
+        seconds = hours_rem % 60;
+
+    return ''.concat(
+        (hours > 0) ? `${hours}:`: '',
+        `${pad(minutes)}:`,
+        `${pad(seconds)}`
+    );
+}
