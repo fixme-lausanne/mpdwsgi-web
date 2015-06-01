@@ -25,6 +25,7 @@ export default class App extends React.Component {
 
             currentSong: null,
             currentPlaylist: null,
+            albums: null,
             isPlaying: false
         };
     }
@@ -49,22 +50,39 @@ export default class App extends React.Component {
         });
     }
 
+    get events() {
+        return new Map([
+            ['resize', this.handleResize]
+        ]);
+    }
+
     componentDidMount() {
         this.handleResize();
-        addEventListener('resize', this.handleResize.bind(this));
+
+        for (let [key, value] of this.events) {
+            addEventListener(key, value.bind(this));
+        }
 
         let initialData = this.props.initialData['appRoot'];
-        let {currentSong, currentPlaylist, status} = initialData;
+        let {
+            currentSong,
+            currentPlaylist,
+            albums,
+            status
+        } = initialData;
 
         this.setState({
             currentSong: currentSong,
             currentPlaylist: currentPlaylist,
+            albums: albums,
             isPlaying: (status.state === 'play') ? true: false
         });
     }
 
     componentWillUnmount() {
-        removeEventListener('resize', this.handleResize.bind(this));
+        for (let [key, value] of this.events) {
+            removeEventListener(key, value.bind(this));
+        }
     }
 
     render() {
