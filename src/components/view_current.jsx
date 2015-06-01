@@ -4,32 +4,6 @@
 import React from 'react';
 
 export default class ViewCurrent extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            songs: [
-                {
-                    cover: '',
-                    title: 'Money',
-                    album: 'The Dark Side of the Moon',
-                    artist: 'Pink Floyd'
-                },
-                {
-                    cover: '',
-                    title: 'Time',
-                    album: 'The Dark Side of the Moon',
-                    artist: 'Pink Floyd'
-                },
-                {
-                    cover: '',
-                    title: 'On the Run',
-                    album: 'The Dark Side of the Moon',
-                    artist: 'Pink Floyd'
-                }
-            ]
-        };
-    }
-
     renderSongs(songs) {
         return [].map.call(songs || [], (song) => {
             return (
@@ -46,9 +20,10 @@ export default class ViewCurrent extends React.Component {
     }
 
     render() {
+        let {currentPlaylist} = this.props.data;
         return (
             <ul id="view-current-songs">
-                {this.renderSongs(this.state.songs)}
+                {this.renderSongs(currentPlaylist)}
             </ul>
         );
     }

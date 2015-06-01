@@ -14,7 +14,27 @@ import Player from './player/Player.jsx';
 export default class App extends React.Component {
     static fetchInitialData(api, params) {
         return csp.go(function*() {
-            yield api.queryInitialData();
+            return (yield api.queryInitialData());
+        });
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentSong: null,
+            currentPlaylist: null,
+            isPlaying: false
+        };
+    }
+
+    componentDidMount() {
+        let initialData = this.props.initialData['appRoot'];
+        let {currentSong, currentPlaylist, status} = initialData;
+
+        this.setState({
+            currentSong: currentSong,
+            currentPlaylist: currentPlaylist,
+            isPlaying: (status.state === 'play') ? true: false
         });
     }
 
@@ -33,11 +53,12 @@ export default class App extends React.Component {
                         </header>
 
                         <div className="content">
-                            <RouteHandler />
+                            <RouteHandler data={this.state}/>
                         </div>
                     </main>
                 </CSSTransitionGroup>
-                <Player />
+                <Player song={this.state.currentSong}
+                        isPlaying={this.state.isPlaying}/>
             </div>
         );
     }

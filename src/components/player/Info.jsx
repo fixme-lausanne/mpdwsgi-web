@@ -2,6 +2,7 @@
 'use strict';
 
 import React from 'react';
+import Tooltip from 'react-tooltip';
 
 export default class Info extends React.Component {
     render() {
@@ -13,21 +14,13 @@ export default class Info extends React.Component {
         return (
             <div className="info-song">
                 <div className="cover" style={coverStyles}></div>
-                <div className="infos">
+                <div className="infos" data-tip={this.props.song.title}>
                     <div className="title">{this.props.song.title}</div>
                     <div className="album">{this.props.song.album}</div>
                     <div className="artist">{this.props.song.artist}</div>
                 </div>
+                <Tooltip place="top" type="dark" effect="solid"/>
             </div>
         );
-    }
-};
-
-Info.defaultProps = {
-    song: {
-        cover: null,
-        title: 'Uknown title',
-        album: 'Unknown album',
-        artist: 'Unknown artist'
     }
 };

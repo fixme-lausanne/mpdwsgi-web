@@ -2,27 +2,35 @@
 import csp from 'js-csp';
 import request from 'superagent';
 import _ from 'lodash';
+import config from '../config';
 
 function fetchInitialData() {
     var ch = csp.chan();
-    csp.putAsync(ch, {
-        error: null,
-        data: {},
-        ok: true
+    request(config.webApi.initial, (err, res) => {
+        if (err) {
+            csp.putAsync(ch, {
+                error: err
+            });
+        } else {
+            csp.putAsync(ch, {
+                data: res.body,
+                ok: true
+            });
+        }
     });
     return ch;
 }
 
 export function queryInitialData() {
     return csp.go(function*() {
-        var response = yield csp.take(fetchInitialData());
-        var data = response.data;
+        let response = yield csp.take(fetchInitialData());
+        let data = response.data;
 
         if (!response.ok) {
             throw response.error;
         }
 
-        var currentPlaylist = {
+        let currentPlaylist = {
             name: 'current',
             songs: _.sortBy(data.currentPlaylist, 'id')
         };

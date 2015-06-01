@@ -7,19 +7,6 @@ import Actions from './Actions.jsx';
 import ProgressBar from './ProgressBar.jsx';
 
 export default class Player extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isPlaying: true,
-            currentSong: {
-                cover: '/images/pink_floyd-dark_side_of_the_moon.jpg',
-                title: 'Time',
-                album: 'The Dark Side of the Moon',
-                artist: 'Pink Floyd'
-            }
-        };
-    }
-
     dispatch(eventName, obj) {
         let event = obj ? new CustomEvent(eventName, {detail: obj}):
             new Event(eventName);
@@ -48,14 +35,20 @@ export default class Player extends React.Component {
     }
 
     render() {
+        let playerContent = this.props.song ?
+                [React.createElement(Info, {song: this.props.song}),
+                 React.createElement(Actions, {
+                     isPlaying: this.props.isPlaying,
+                     onClickPrevious: this.handleClickPrevious.bind(this),
+                     onClickPlay: this.handleClickPlay.bind(this),
+                     onClickPause: this.handleClickPause.bind(this)
+                 }),
+                 React.createElement(ProgressBar, {
+                     isPlaying: this.props.isPlaying
+                 })]: null;
         return (
             <div className="bottom-player">
-                <Info song={this.state.currentSong}/>
-                <Actions isPlaying={this.state.isPlaying}
-                         onClickPrevious={this.handleClickPrevious.bind(this)}
-                         onClickPlay={this.handleClickPlay.bind(this)}
-                         onClickPause={this.handleClickPause.bind(this)}/>
-                <ProgressBar isPlaying={this.state.isPlaying}/>
+                {playerContent}
             </div>
         );
     }
