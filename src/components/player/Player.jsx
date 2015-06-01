@@ -49,7 +49,7 @@ export default class Player extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="bottom-player">
                 <Info song={this.state.currentSong}/>
                 <Actions isPlaying={this.state.isPlaying}
                          onClickPrevious={this.handleClickPrevious.bind(this)}

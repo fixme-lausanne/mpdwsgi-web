@@ -12,15 +12,15 @@ import {decodeParams} from './utils';
 
 import App from './components/app.jsx';
 import ViewCurrent from './components/view_current.jsx';
-import ProgressBar from './components/player/ProgressBar.jsx';
-
 
 let routes = (
     <Route name="appRoot" path="/" handler={App}>
         <DefaultRoute name="current" handler={ViewCurrent} />
+        <Route name="albums" handler={ViewCurrent}/>
+        <Route name="artists" handler={ViewCurrent}/>
+        <Route name="playlists" handler={ViewCurrent}/>
         <NotFoundRoute handler={ViewCurrent} />
     </Route>
-
 );
 
 Router.run(routes, Router.HashLocation, function(Handler, state) {
