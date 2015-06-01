@@ -2,6 +2,7 @@
 'use strict';
 
 import React from 'react';
+import * as _ from 'lodash';
 import {formatTime} from '../../utils';
 
 export default class ProgressBar extends React.Component {
@@ -16,7 +17,7 @@ export default class ProgressBar extends React.Component {
         });
     }
 
-    start(fromTime) {
+    anim(fromTime) {
         if (this.state.intervalId) {
             clearInterval(this.state.intervalId);
         }
@@ -36,6 +37,14 @@ export default class ProgressBar extends React.Component {
             intervalId: intervalId
         });
         return fromTime;
+    }
+
+    start(fromTime) {
+        return this.anim(fromTime || 0);
+    }
+
+    play() {
+        return this.anim(this.state.currentTime + 1);
     }
 
     pause() {
@@ -70,18 +79,33 @@ export default class ProgressBar extends React.Component {
         });
     }
 
+    get events() {
+        return new Map([
+            ['resize', this.handleResize],
+            ['player:start', (e) => {
+                let fromTime = _.get(e, 'detail.fromTime');
+                if (typeof fromTime === 'number' && fromTime >= 0) {
+                    this.start.call(this, fromTime);
+                }
+            }],
+            ['player:pause', this.pause],
+            ['player:play', this.play]
+        ]);
+    }
+
     componentDidMount() {
         this.handleResize();
-        this.start(0);
-        addEventListener('resize', this.handleResize.bind(this));
-        addEventListener('player:start', (e) => {
-            this.start.call(this, e.detail.fromTime);
-        });
-        addEventListener('player:pause', this.pause.bind(this));
+        this.start();
+
+        for (let [key, value] of this.events) {
+            addEventListener(key, value.bind(this));
+        }
     }
 
     componentWillUnmount() {
-        removeEventListener('resize', this.handleResize.bind(this));
+        for (let [key, value] of this.events) {
+            removeEventListener(key, value.bind(this));
+        }
     }
 
     render() {

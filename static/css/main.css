@@ -302,6 +302,22 @@ main .content {
   margin-right: 10px;
 }
 
+.player-actions .pause-play[data-playing=false] .pause {
+  display: none
+}
+
+.player-actions .pause-play[data-playing=false] .play {
+  display: inline-block;
+}
+
+.player-actions .pause-play[data-playing=true] .pause {
+  display: inline-block;
+}
+
+.player-actions .pause-play[data-playing=true] .play {
+  display: none;
+}
+
 /* Time tracking */
 .time-track > div {
   display: inline-block;
