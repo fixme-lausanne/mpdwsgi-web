@@ -7,7 +7,43 @@
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
-        <div id="react-root"></div>
+        <div id="react-root">
+            <!-- Left menu -->
+            <aside class="menu">
+                <header>
+                    <h1 class="brand">Fix My Music
+                        <sup>
+                            <div class="flip">
+                                <div class="front">Hack</div>
+                                <div class="back">Hack</div>
+                            </div>
+                        </sup>
+                    </h1>
+                </header>
+                <nav></nav>
+            </aside>
+
+            <!-- Main panel -->
+            <main>
+                <header>
+                    <div class="search">
+                        <img class="icon" src="images/icon-search.png">
+                        <input type="text" placeholder="Search terms">
+                    </div>
+                </header>
+
+                <div class="content">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <b>Welcome! Please, take a seat while we are loading everything.</b>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Player -->
+            <div class="bottom-player"></div>
+        </div>
+
         <script src="output/bundle.js"></script>
     </body>
 </html>

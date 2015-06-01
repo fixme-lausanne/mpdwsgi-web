@@ -2,7 +2,8 @@
 /*global require,module*/
 'use strict';
 
-import React from 'react';
+import React from 'react/addons';
+let {CSSTransitionGroup} = React.addons;
 import Router from 'react-router';
 let {RouteHandler} = Router;
 import csp from 'js-csp';
@@ -20,21 +21,22 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
-                <SideMenu />
+                <CSSTransitionGroup transitionName="screen"
+                                    transitionAppear={true}>
+                    <SideMenu />
+                    <main>
+                        <header>
+                            <div className="search">
+                                <img className="icon" src="images/icon-search.png"/>
+                                <input type="text" placeholder="Search terms"/>
+                            </div>
+                        </header>
 
-                <main>
-                    <header>
-                        <div className="search">
-                            <img className="icon" src="images/icon-search.png"/>
-                            <input type="text" placeholder="Search terms"/>
+                        <div className="content">
+                            <RouteHandler />
                         </div>
-                    </header>
-
-                    <div className="content">
-                        <RouteHandler />
-                    </div>
-                </main>
-
+                    </main>
+                </CSSTransitionGroup>
                 <Player />
             </div>
         );
