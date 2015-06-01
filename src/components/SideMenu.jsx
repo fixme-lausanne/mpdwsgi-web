@@ -21,10 +21,18 @@ export default class SideMenu extends React.Component {
                 </header>
                 <nav>
                     <ul>
-                        <li className="active"><Link to="current">Current</Link></li>
-                        <li><Link to="albums">Albums</Link></li>
-                        <li><Link to="artists">Artists</Link></li>
-                        <li><Link to="playlists">Playlists</Link></li>
+                        <li><Link to="current" activeClassName="active">
+                            Current
+                        </Link></li>
+                        <li><Link to="albums" activeClassName="active">
+                            Albums
+                        </Link></li>
+                        <li><Link to="artists" activeClassName="active">
+                            Artists
+                        </Link></li>
+                        <li><Link to="playlists" activeClassName="active">
+                            Playlists
+                        </Link></li>
                     </ul>
                 </nav>
             </aside>

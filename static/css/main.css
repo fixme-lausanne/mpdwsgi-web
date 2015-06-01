@@ -171,30 +171,35 @@ aside.menu header:hover .brand .flip {
 }
 
 .menu li {
+  margin: 0;
+}
+
+.menu li a {
+  box-sizing: border-box;
   height: 35px;
+  width: 100%;
 
   padding-left: 25px;
-  margin: 0;
 
-  text-align: center;
   display: flex;
   align-items: center;
+  text-align: left;
 
   transition: background-color 450ms;
 }
 
-.menu li.active {
-  text-decoration: underline;
+.menu li a.active {
+  background-color: rgb(255, 85, 85);
+  font-weight: bold;
 }
 
-.menu li:hover {
+.menu li a:hover {
   background-color: #784446;
   cursor: pointer;
 }
 
-.menu li a {
-  width: 100%;
-  text-align: left;
+.menu li a.active:hover {
+  background-color: #B6484C;
 }
 
 /* -------------------
