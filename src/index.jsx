@@ -1,21 +1,21 @@
 /*jshint esnext: true*/
-/*global require,module*/
-require('babelify/polyfill');
+'use strict';
+import 'babelify/polyfill';
 
-var React = require('react'),
-    Router = require('react-router'),
-    csp = require('js-csp'),
-    api = require('./api'),
-    decodeParams = require('./utils').decodeParams,
+import React from 'react';
+import Router from 'react-router';
+let {Route, DefaultRoute, NotFoundRoute} = Router;
 
-    Route = Router.Route,
-    DefaultRoute = Router.DefaultRoute,
-    NotFoundRoute = Router.NotFoundRoute,
+import csp from 'js-csp';
+import * as api from './api';
+import {decodeParams} from './utils';
 
-    App = require('./components/app.jsx'),
-    ViewCurrent = require('./components/view_current.jsx');
+import App from './components/app.jsx';
+import ViewCurrent from './components/view_current.jsx';
+import ProgressBar from './components/player/ProgressBar.jsx';
 
-var routes = (
+
+let routes = (
     <Route name="appRoot" path="/" handler={App}>
         <DefaultRoute name="current" handler={ViewCurrent} />
         <NotFoundRoute handler={ViewCurrent} />
@@ -25,7 +25,7 @@ var routes = (
 
 Router.run(routes, Router.HashLocation, function(Handler, state) {
     csp.go(function*() {
-        var fetchableRoutes = state.routes.filter(function(route) {
+        let fetchableRoutes = state.routes.filter(function(route) {
             return route.handler.fetchInitialData;
         });
 
@@ -37,7 +37,7 @@ Router.run(routes, Router.HashLocation, function(Handler, state) {
             fetchedData[fetchableRoutes[i].name] = data;
         }
 
-        var props = {
+        let props = {
             initialData: fetchedData
         };
 

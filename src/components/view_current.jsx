@@ -1,10 +1,9 @@
 /*jshint esnext: true*/
-/*global require,module*/
 'use strict';
 
-var React = require('react');
+import React from 'react';
 
-class ViewCurrent extends React.Component {
+export default class ViewCurrent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -53,6 +52,4 @@ class ViewCurrent extends React.Component {
             </ul>
         );
     }
-}
-
-module.exports = ViewCurrent;
+};

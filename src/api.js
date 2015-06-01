@@ -1,9 +1,7 @@
 /*jshint esnext: true*/
-/*global require,module*/
-var csp = require('js-csp'),
-    request = require('superagent'),
-    _ = require('lodash'),
-    Config = require('../config.json');
+import csp from 'js-csp';
+import request from 'superagent';
+import _ from 'lodash';
 
 function fetchInitialData() {
     var ch = csp.chan();
@@ -12,17 +10,10 @@ function fetchInitialData() {
         data: {},
         ok: true
     });
-    // request.get(Config.api + '/initial_data').end(function(error, res) {
-    //     csp.putAsync(ch, {
-    //         error: error,
-    //         data: res.body,
-    //         ok: res.ok
-    //     });
-    // });
     return ch;
 }
 
-function queryInitialData() {
+export function queryInitialData() {
     return csp.go(function*() {
         var response = yield csp.take(fetchInitialData());
         var data = response.data;
@@ -47,7 +38,3 @@ function queryInitialData() {
         };
     });
 }
-
-module.exports = {
-    queryInitialData: queryInitialData
-};
