@@ -26,6 +26,7 @@ export default class App extends React.Component {
             currentSong: null,
             currentPlaylist: null,
             albums: null,
+            artists: null,
             isPlaying: false
         };
     }
@@ -68,13 +69,15 @@ export default class App extends React.Component {
             currentSong,
             currentPlaylist,
             albums,
+            artists,
             status
         } = initialData;
 
         this.setState({
-            currentSong: currentSong,
-            currentPlaylist: currentPlaylist,
-            albums: albums,
+            currentSong,
+            currentPlaylist,
+            albums,
+            artists,
             isPlaying: (status.state === 'play') ? true: false
         });
     }
