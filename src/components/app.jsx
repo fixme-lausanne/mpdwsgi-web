@@ -106,7 +106,7 @@ export default class App extends React.Component {
                 }.bind(this));
             }],
 
-            ['storedplaylist', () => {
+            ['update', () => {
                 csp.go(function*() {
                     let allData = yield api.queryInitialData();
                     this.setInitialData(allData);
