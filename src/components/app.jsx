@@ -33,6 +33,20 @@ export default class App extends React.Component {
             artists: null,
             isPlaying: false
         };
+
+        socket.onmessage = (message) => {
+            let obj = JSON.parse(message.data);
+            if (obj.status === 'success' && obj.result) {
+                [].map.call(obj.result, (event) => {
+                    let fnEvent = this.socketEvents.get(event);
+                    if (fnEvent) {
+                        fnEvent.call(this);
+                    }
+                });
+            } else {
+                console.error('Error on event: ', message, obj);
+            }
+        };
     }
 
     handleResize() {
@@ -55,47 +69,7 @@ export default class App extends React.Component {
         });
     }
 
-    get events() {
-        return new Map([
-            ['resize', this.handleResize]
-        ]);
-    }
-
-    get socketEvents() {
-        return new Map([
-            ['playlist', () => {
-                csp.go(function*() {
-                    let current = yield api.queryCurrent();
-                    this.setState({
-                        currentPlaylist: current
-                    });
-                }.bind(this));
-            }]
-        ]);
-    }
-
-    componentDidMount() {
-        this.handleResize();
-
-        for (let [key, value] of this.events) {
-            addEventListener(key, value.bind(this));
-        }
-
-        socket.onmessage = (message) => {
-            let obj = JSON.parse(message.data);
-            if (obj.status === 'success' && obj.result) {
-                [].map.call(obj.result, (event) => {
-                    let fnEvent = this.socketEvents.get(event);
-                    if (fnEvent) {
-                        fnEvent.call(this);
-                    }
-                });
-            } else {
-                console.error('Error on event: ', message, obj);
-            }
-        };
-
-        let initialData = this.props.initialData['appRoot'];
+    setInitialData(initialData) {
         let {
             currentSong,
             currentPlaylist,
@@ -115,12 +89,45 @@ export default class App extends React.Component {
         });
     }
 
-    componentWillUnmount() {
+    get events() {
+        return new Map([
+            ['resize', this.handleResize]
+        ]);
+    }
+
+    get socketEvents() {
+        return new Map([
+            ['playlist', () => {
+                csp.go(function*() {
+                    let current = yield api.queryCurrent();
+                    this.setState({
+                        currentPlaylist: current
+                    });
+                }.bind(this));
+            }],
+
+            ['storedplaylist', () => {
+                csp.go(function*() {
+                    let allData = yield api.queryInitialData();
+                    this.setInitialData(allData);
+                }.bind(this));
+            }]
+        ]);
+    }
+
+    componentDidMount() {
+        this.handleResize();
+
         for (let [key, value] of this.events) {
-            removeEventListener(key, value.bind(this));
+            addEventListener(key, value.bind(this));
         }
 
-        for (let [key, value] of this.socketEvents) {
+        let initialData = this.props.initialData['appRoot'];
+        this.setInitialData(initialData);
+    }
+
+    componentWillUnmount() {
+        for (let [key, value] of this.events) {
             removeEventListener(key, value.bind(this));
         }
     }
