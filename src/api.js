@@ -2,11 +2,12 @@
 import csp from 'js-csp';
 import request from 'superagent';
 import _ from 'lodash';
-import config from '../config';
+import {webApi} from '../config';
 
-function fetchInitialData() {
+
+function fetch(path) {
     var ch = csp.chan();
-    request(config.webApi.initial, (err, res) => {
+    request(path, (err, res) => {
         if (err) {
             csp.putAsync(ch, {
                 error: err
@@ -23,17 +24,12 @@ function fetchInitialData() {
 
 export function queryInitialData() {
     return csp.go(function*() {
-        let response = yield csp.take(fetchInitialData());
+        let response = yield csp.take(fetch(webApi.initial));
         let data = response.data;
 
         if (!response.ok) {
             throw response.error;
         }
-
-        let currentPlaylist = {
-            name: 'current',
-            songs: _.sortBy(data.currentPlaylist, 'id')
-        };
 
         return {
             currentSong: data.currentsong,
@@ -44,5 +40,18 @@ export function queryInitialData() {
             artists: _.groupBy(data.songs, 'artist'),
             status: data.status
         };
+    });
+}
+
+export function queryCurrent() {
+    return csp.go(function*() {
+        let response = yield csp.take(fetch(webApi.current));
+        let data = response.data;
+
+        if (!response.ok) {
+            throw response.error;
+        }
+
+        return data.songs;
     });
 }

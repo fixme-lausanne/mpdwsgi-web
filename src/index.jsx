@@ -7,7 +7,6 @@ import Router from 'react-router';
 let {Route, DefaultRoute, NotFoundRoute} = Router;
 
 import csp from 'js-csp';
-import * as api from './api';
 import {decodeParams} from './utils';
 
 import App from './components/app.jsx';
@@ -36,7 +35,7 @@ Router.run(routes, Router.HashLocation, function(Handler, state) {
         for (var i = 0; i < fetchableRoutes.length; i += 1) {
             var data = yield fetchableRoutes[i]
                     .handler
-                    .fetchInitialData(api, decodeParams(state.params));
+                    .fetchInitialData(decodeParams(state.params));
             fetchedData[fetchableRoutes[i].name] = data;
         }
 

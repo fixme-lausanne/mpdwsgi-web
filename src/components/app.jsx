@@ -8,11 +8,14 @@ import Router from 'react-router';
 let {RouteHandler} = Router;
 import csp from 'js-csp';
 
+import * as api from '../api';
+import socket from '../socket';
+
 import SideMenu from './SideMenu.jsx';
 import Player from './player/Player.jsx';
 
 export default class App extends React.Component {
-    static fetchInitialData(api, params) {
+    static fetchInitialData(params) {
         return csp.go(function*() {
             return (yield api.queryInitialData());
         });
@@ -58,12 +61,39 @@ export default class App extends React.Component {
         ]);
     }
 
+    get socketEvents() {
+        return new Map([
+            ['playlist', () => {
+                csp.go(function*() {
+                    let current = yield api.queryCurrent();
+                    this.setState({
+                        currentPlaylist: current
+                    });
+                }.bind(this));
+            }]
+        ]);
+    }
+
     componentDidMount() {
         this.handleResize();
 
         for (let [key, value] of this.events) {
             addEventListener(key, value.bind(this));
         }
+
+        socket.onmessage = (message) => {
+            let obj = JSON.parse(message.data);
+            if (obj.status === 'success' && obj.result) {
+                [].map.call(obj.result, (event) => {
+                    let fnEvent = this.socketEvents.get(event);
+                    if (fnEvent) {
+                        fnEvent.call(this);
+                    }
+                });
+            } else {
+                console.error('Error on event: ', message, obj);
+            }
+        };
 
         let initialData = this.props.initialData['appRoot'];
         let {
@@ -87,6 +117,10 @@ export default class App extends React.Component {
 
     componentWillUnmount() {
         for (let [key, value] of this.events) {
+            removeEventListener(key, value.bind(this));
+        }
+
+        for (let [key, value] of this.socketEvents) {
             removeEventListener(key, value.bind(this));
         }
     }

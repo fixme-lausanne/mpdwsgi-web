@@ -95,7 +95,9 @@ export default class ProgressBar extends React.Component {
 
     componentDidMount() {
         this.handleResize();
-        this.start();
+        if (this.props.isPlaying) {
+            this.start();
+        }
 
         for (let [key, value] of this.events) {
             addEventListener(key, value.bind(this));
