@@ -116,6 +116,10 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
+        // dirty hack
+        let contentNode = React.findDOMNode(this.refs.content);
+        contentNode.className = contentNode.className.replace('loading', '');
+
         this.handleResize();
 
         for (let [key, value] of this.events) {

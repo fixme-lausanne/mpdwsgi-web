@@ -51,7 +51,7 @@ a, a:hover {
   animation: sk-pulseScaleOut 1s infinite ease-in-out;
 }
 
-.loading content {
+.content.loading {
   overflow: hidden;
 }
 
