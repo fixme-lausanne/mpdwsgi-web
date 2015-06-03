@@ -13,8 +13,6 @@ You only need to have a working version of `node` installed (`v0.10+`? not sure 
 
 As this project is only the frontend, you will need a running instance of [mpd-wsgi](https://github.com/fixme-lausanne/mpd-wsgi) and a MPD server if you want to display some data.
 
-Clone the repo
-
 ```
 # Clone the repo
 git clone github.com:fixme-lausanne/mpdwsgi-web.git
