@@ -82,26 +82,10 @@ a, a:hover {
 }
 
 /* Notifications */
-#toast-container {
-  display: inline-block;
-  position: absolute;
-  right: 0;
-  padding-right: 20px;
-  padding-top: 20px
+#toast-container > div {
+  box-shadow: none;
 }
 
-#toast-container .toast {
-  border: 1px solid black;
-  border-radius: 3px;
-  padding: 13px;
-  margin-bottom: 10px;
-}
-
-#toast-container .toast.toast-error {
-  background-color: #F2DEDE;
-  border-color: #DBAEAE;
-  color: #a94442;
-}
 
 /* ------------------
  * Section: Left menu
