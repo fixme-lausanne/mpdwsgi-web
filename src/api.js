@@ -43,9 +43,9 @@ export function queryInitialData() {
     });
 }
 
-export function queryCurrent() {
+export function queryCurrentPlaylist() {
     return csp.go(function*() {
-        let response = yield csp.take(fetch(webApi.current));
+        let response = yield csp.take(fetch(webApi.currentPlaylist));
         let data = response.data;
 
         if (!response.ok) {
@@ -53,5 +53,31 @@ export function queryCurrent() {
         }
 
         return data.songs;
+    });
+}
+
+export function queryCurrentSong() {
+    return csp.go(function*() {
+        let response = yield csp.take(fetch(webApi.currentSong));
+        let data = response.data;
+
+        if (!response.ok) {
+            throw response.error;
+        }
+
+        return data;
+    });
+}
+
+export function queryStatus() {
+    return csp.go(function*() {
+        let response = yield csp.take(fetch(webApi.status));
+        let data = response.data;
+
+        if (!response.ok) {
+            throw response.error;
+        }
+
+        return data;
     });
 }

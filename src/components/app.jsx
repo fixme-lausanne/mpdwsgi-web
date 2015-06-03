@@ -6,10 +6,13 @@ import React from 'react/addons';
 let {CSSTransitionGroup} = React.addons;
 import Router from 'react-router';
 let {RouteHandler} = Router;
-import csp from 'js-csp';
 
+import csp from 'js-csp';
 import * as api from '../api';
 import socket from '../socket';
+
+import {ToastContainer, ToastMessage} from 'react-toastr';
+let ToastMessageFactory = React.createFactory(ToastMessage.animation);
 
 import SideMenu from './SideMenu.jsx';
 import Player from './player/Player.jsx';
@@ -99,10 +102,8 @@ export default class App extends React.Component {
         return new Map([
             ['playlist', () => {
                 csp.go(function*() {
-                    let current = yield api.queryCurrent();
-                    this.setState({
-                        currentPlaylist: current
-                    });
+                    let currentPlaylist = yield api.queryCurrentPlaylist();
+                    this.setState({currentPlaylist});
                 }.bind(this));
             }],
 
@@ -110,6 +111,24 @@ export default class App extends React.Component {
                 csp.go(function*() {
                     let allData = yield api.queryInitialData();
                     this.setInitialData(allData);
+                }.bind(this));
+            }],
+
+            ['player', () => {
+                csp.go(function*() {
+                    let status = yield api.queryStatus();
+                    let currentSong = yield api.queryCurrentSong();
+                    let isPlaying = (!status.error || status.state == 'play');
+
+                    this.setState({currentSong, isPlaying});
+
+                    if (status.error) {
+                        this.refs.container.error(
+                            status.error, 'MPD error',{
+                                timeOut: 30,
+                                extendedTimeOut: 60
+                            });
+                    }
                 }.bind(this));
             }]
         ]);
@@ -142,6 +161,9 @@ export default class App extends React.Component {
         };
         return (
             <div>
+                <ToastContainer toastMessageFactory={ToastMessageFactory}
+                                ref="container"
+                                className="toast-top-right"/>
                 <CSSTransitionGroup transitionName="screen"
                                     transitionAppear={true}>
                     <SideMenu />

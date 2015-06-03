@@ -32,6 +32,7 @@
     "react": "^0.13.3",
     "react-inlinesvg": "^0.4.1",
     "react-router": "^0.13.3",
+    "react-toastr": "^1.4.0",
     "react-tooltip": "^0.2.4",
     "superagent": "^1.2.0"
   },
