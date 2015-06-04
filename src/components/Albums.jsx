@@ -3,12 +3,19 @@
 
 import React from 'react';
 import {formatTime} from '../utils';
+import {addToCurrentPlaylist} from '../api';
 
 export default class Albums extends React.Component {
-    renderSongs(songs) {
-        return [].map.call(songs || [], (song) => {
+    handleClickSong(songFile, e) {
+        addToCurrentPlaylist(songFile);
+    }
+
+    renderSongs(albumId, songs) {
+        return [].map.call(songs || [], (song, index) => {
             return (
-                <li className="song row">
+                <li key={`album-${albumId}-${index}`}
+                    className="song row"
+                    onClick={this.handleClickSong.bind(null, song.file)}>
                     <div className="three columns"></div>
                     <div className="one column">{song.track}</div>
                     <div className="one columns">{formatTime(song.time)}</div>
@@ -20,16 +27,16 @@ export default class Albums extends React.Component {
     }
 
     renderAlbums(albums) {
-        return [].map.call(Object.keys(albums || {}), (album) => {
+        return [].map.call(Object.keys(albums || {}), (album, index) => {
             let songs = albums[album];
             return (
-                    <li className="album">
+                    <li key={`album-${index}`} className="album">
                     <h3>{album}</h3>
                     <div className="row">
                         <div className="three columns">cov</div>
                         <div className="nine columns">
                             <ul className="songs">
-                                {this.renderSongs(songs)}
+                                {this.renderSongs(index, songs)}
                             </ul>
                     </div>
                     </div>

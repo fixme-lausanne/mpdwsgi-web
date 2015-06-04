@@ -4,10 +4,9 @@ import request from 'superagent';
 import _ from 'lodash';
 import {webApi} from '../config';
 
-
-function fetch(path) {
+function req(method, path, data) {
     var ch = csp.chan();
-    request(path, (err, res) => {
+    request(method, path).send(data).end((err, res) => {
         if (err) {
             csp.putAsync(ch, {
                 error: err
@@ -20,6 +19,14 @@ function fetch(path) {
         }
     });
     return ch;
+}
+
+function fetch(path) {
+    return req('GET', path);
+}
+
+function insert(path, data) {
+    return req('PUT', path, data);
 }
 
 export function queryInitialData() {
@@ -53,6 +60,14 @@ export function queryCurrentPlaylist() {
         }
 
         return data.songs;
+    });
+}
+
+
+export function addToCurrentPlaylist (songFile) {
+    return csp.go(function*() {
+        let data = `song=${songFile}`;
+        let response = yield csp.take(insert(webApi.currentPlaylist, data));
     });
 }
 
