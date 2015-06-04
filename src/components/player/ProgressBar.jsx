@@ -4,14 +4,14 @@
 import React from 'react';
 import * as _ from 'lodash';
 import {formatTime} from '../../utils';
+import {actions} from '../../api';
 
 export default class ProgressBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = ({
-            animate: false,
+            animate: true,
             currentTime: null,
-            totalTime: 60,
             totalWidth: null,
             stepWidth: null
         });
@@ -65,8 +65,13 @@ export default class ProgressBar extends React.Component {
     }
 
     timeToWidth(seconds) {
-        let ratio = seconds / this.state.totalTime;
+        let ratio = seconds / this.props.song.time;
         return this.state.totalWidth * ratio;
+    }
+
+    widthToTime(width) {
+        let ratio = width / this.state.totalWidth;
+        return Math.floor(this.props.song.time * ratio);
     }
 
     getTotalWidth() {
@@ -76,6 +81,18 @@ export default class ProgressBar extends React.Component {
     handleResize(e) {
         this.setState({
             totalWidth: this.getTotalWidth()
+        });
+    }
+
+    handleClick(e) {
+        let {clientX, target} = e,
+            {left} = target.getBoundingClientRect(),
+            inElemX = clientX - left,
+            time = this.widthToTime(inElemX);
+
+        actions.seek(time);
+        this.setState({
+            currentTime: time
         });
     }
 
@@ -121,11 +138,11 @@ export default class ProgressBar extends React.Component {
         return (
             <div className="time-track">
                 <div className="current time-text">{formatTime(this.state.currentTime)}</div>
-                <div className="time-bars">
+                <div className="time-bars" onClick={this.handleClick.bind(this)}>
                     <div ref="currentTimeBar" className="current time-bar" style={currentTimeBarStyles}></div>
                     <div ref="totalTimeBar" className="total time-bar"></div>
                 </div>
-                <div className="total time-text">{formatTime(this.state.totalTime)}</div>
+                <div className="total time-text">{formatTime(this.props.song.time)}</div>
             </div>
         );
     }

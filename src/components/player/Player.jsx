@@ -20,7 +20,9 @@ export default class Player extends React.Component {
                      onClickPause: actions.pause
                  }),
                  React.createElement(ProgressBar, {
-                     isPlaying: this.props.isPlaying
+                     isPlaying: this.props.isPlaying,
+                     song: this.props.song,
+                     onClick: actions.seek
                  })]: null;
         return (
             <div className="bottom-player">
