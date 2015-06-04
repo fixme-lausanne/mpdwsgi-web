@@ -10,7 +10,7 @@ export default class Actions extends React.Component {
             fnAction = this.props[`onClick${capsAction}`];
         return React.DOM.span({
             className: `action ${action}`,
-            onClick: fnAction
+            onClick: fnAction.bind(null, null) // avoid event object as first param
         }, React.createElement(Isvg, {
             src: filename
         }));
