@@ -63,7 +63,6 @@ export function queryCurrentPlaylist() {
     });
 }
 
-
 export function addToCurrentPlaylist (songFile) {
     return csp.go(function*() {
         let data = `song=${songFile}`;

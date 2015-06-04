@@ -10,10 +10,11 @@ export default class ViewCurrent extends React.Component {
     }
 
     renderSongs(songs) {
-        return [].map.call(songs || [], (song) => {
+        return [].map.call(songs || [], (song, index) => {
             return (
                 <li className="song row"
-                    onClick={this.handleClickSong.bind(null, song.id)}>
+                    key={`current-song-${index}`}
+                    onClick={this.handleClickSong.bind(null, index)}>
                     <div className="cover one column">{song.cover}</div>
                     <div className="title four columns">{song.title}</div>
                     <div className="six columns">
