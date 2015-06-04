@@ -2,12 +2,18 @@
 'use strict';
 
 import React from 'react';
+import {actions} from '../api';
 
 export default class ViewCurrent extends React.Component {
+    handleClickSong(songId, e) {
+        actions.play(songId);
+    }
+
     renderSongs(songs) {
         return [].map.call(songs || [], (song) => {
             return (
-                <li className="song row">
+                <li className="song row"
+                    onClick={this.handleClickSong.bind(null, song.id)}>
                     <div className="cover one column">{song.cover}</div>
                     <div className="title four columns">{song.title}</div>
                     <div className="six columns">

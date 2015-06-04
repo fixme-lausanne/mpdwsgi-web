@@ -81,3 +81,24 @@ export function queryStatus() {
         return data;
     });
 }
+
+function sendAction(actionName, value) {
+    return csp.go(function*() {
+        let path = _.compact([webApi.action, actionName, value]).join('/');
+        let response = yield csp.take(fetch(path));
+
+        if (!response.ok) {
+            throw response.error;
+        }
+
+        return response.data;
+    });
+}
+
+const listActions = ['pause', 'play', 'previous', 'next', 'seek'];
+const actions = listActions.reduce((acc, actionName) => {
+    acc[actionName] = sendAction.bind(null, actionName);
+    return acc;
+}, {});
+
+export {actions};
