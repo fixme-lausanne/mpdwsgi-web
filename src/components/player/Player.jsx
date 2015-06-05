@@ -53,6 +53,7 @@ export default class Player extends React.Component {
                  React.createElement(ProgressBar, {
                      isPlaying: this.state.isPlaying,
                      song: this.props.song,
+                     currentTime: this.props.currentTime,
                      onClick: actions.seek
                  })]: null;
         return (

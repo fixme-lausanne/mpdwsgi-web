@@ -24,6 +24,11 @@ export function pad(str, size) {
 }
 
 export function formatTime(time) {
+    time = parseInt(time, 10);
+    if (time !== 0 && !time) {
+        return '';
+    }
+
     let hours = Math.floor(time / 3600),
         hours_rem = time % 3600,
         minutes = Math.floor(hours_rem / 60),

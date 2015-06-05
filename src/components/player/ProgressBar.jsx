@@ -23,14 +23,16 @@ export default class ProgressBar extends React.Component {
         }
 
         let intervalId = setInterval(function(context) {
-            if (context.state.currentTime < context.state.totalTime) {
+            let totalTime = parseInt(context.props.song.time, 10);
+            if (context.state.currentTime < totalTime) {
                 context.setState({currentTime: context.state.currentTime + 1});
             } else {
-                context.setState({currentTime: context.state.totalTime});
+                context.setState({currentTime: totalTime});
                 context.pause();
             }
         }.bind(null, this), 1000);
 
+        this.state.intervalId = intervalId;
         this.setState({
             animate: true,
             currentTime: fromTime,
@@ -47,11 +49,12 @@ export default class ProgressBar extends React.Component {
         return this.anim(this.state.currentTime + 1);
     }
 
-    pause() {
+    pause(atTime) {
         clearInterval(this.state.intervalId);
         this.setState({
             animate: false,
-            intervalId: null
+            intervalId: null,
+            currentTime: atTime || this.state.currentTime
         });
         return this.state.currentTime;
     }
@@ -98,27 +101,26 @@ export default class ProgressBar extends React.Component {
 
     get events() {
         return new Map([
-            ['resize', this.handleResize],
-            ['player:start', (e) => {
-                let fromTime = _.get(e, 'detail.fromTime');
-                if (typeof fromTime === 'number' && fromTime >= 0) {
-                    this.start.call(this, fromTime);
-                }
-            }],
-            ['player:pause', this.pause],
-            ['player:play', this.play]
+            ['resize', this.handleResize]
         ]);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.isPlaying) {
+            this.start(nextProps.currentTime);
+        } else {
+            this.pause(nextProps.currentTime);
+        }
     }
 
     componentDidMount() {
         this.handleResize();
-        if (this.props.isPlaying) {
-            this.start();
-        }
 
         for (let [key, value] of this.events) {
             addEventListener(key, value.bind(this));
         }
+
+        this.componentWillReceiveProps(this.props);
     }
 
     componentWillUnmount() {

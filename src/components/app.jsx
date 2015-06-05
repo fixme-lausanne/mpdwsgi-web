@@ -34,7 +34,8 @@ export default class App extends React.Component {
             playlists: null,
             albums: null,
             artists: null,
-            isPlaying: false
+            isPlaying: false,
+            currentTime: null
         };
 
         socket.onmessage = (message) => {
@@ -88,7 +89,8 @@ export default class App extends React.Component {
             playlists,
             albums,
             artists,
-            isPlaying: (status.state === 'play') ? true: false
+            isPlaying: (status.state === 'play') ? true: false,
+            currentTime: parseInt(status.elapsed, 10)
         });
     }
 
@@ -120,13 +122,14 @@ export default class App extends React.Component {
                     let currentSong = yield api.queryCurrentSong();
                     let isPlaying = (!status.error && status.state == 'play');
 
-                    this.setState({currentSong, isPlaying});
+                    this.setState({currentSong, isPlaying,
+                                   currentTime: parseInt(status.elapsed, 10)});
 
                     if (status.error) {
                         this.refs.container.error(
                             status.error, 'MPD error',{
                                 timeOut: 30,
-                                extendedTimeOut: 60
+                                extendedTimeOut: 60,
                             });
                     }
                 }.bind(this));
@@ -185,6 +188,7 @@ export default class App extends React.Component {
                     </main>
                 </CSSTransitionGroup>
                 <Player ref="player" song={this.state.currentSong}
+                        currentTime={this.state.currentTime}
                         isPlaying={this.state.isPlaying}/>
             </div>
         );
