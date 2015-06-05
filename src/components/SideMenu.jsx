@@ -8,7 +8,7 @@ var {Link} = Router;
 export default class SideMenu extends React.Component {
     render() {
         return (
-            <aside className="menu">
+            <aside className="menu no-select no-drag">
                 <header>
                     <h1 className="brand">Fix My Music
                         <sup>

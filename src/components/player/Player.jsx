@@ -56,7 +56,7 @@ export default class Player extends React.Component {
                      onClick: actions.seek
                  })]: null;
         return (
-            <div className="bottom-player">
+            <div className="bottom-player no-select no-drag">
                 {playerContent}
             </div>
         );

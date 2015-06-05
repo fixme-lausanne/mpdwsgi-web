@@ -27,6 +27,26 @@ a, a:hover {
 }
 
 /* -------
+ * Helpers
+ * -------
+ */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.no-drag {
+  -webkit-user-drag: none;
+  -moz-user-drag: none;
+  -ms-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+/* -------
  * Spinner
  * From [tobiasahlin's SpinKit](https://github.com/tobiasahlin/SpinKit)
  * -------

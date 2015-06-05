@@ -135,9 +135,12 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
-        // dirty hack
+        // Fix some style stuff
         let contentNode = React.findDOMNode(this.refs.content);
         contentNode.className = contentNode.className.replace('loading', '');
+        [].map.call(document.querySelectorAll('.no-drag'), (elem) => {
+            elem.ondragstart = () => false;
+        });
 
         this.handleResize();
 
