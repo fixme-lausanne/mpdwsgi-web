@@ -118,7 +118,7 @@ export default class App extends React.Component {
                 csp.go(function*() {
                     let status = yield api.queryStatus();
                     let currentSong = yield api.queryCurrentSong();
-                    let isPlaying = (!status.error || status.state == 'play');
+                    let isPlaying = (!status.error && status.state == 'play');
 
                     this.setState({currentSong, isPlaying});
 
