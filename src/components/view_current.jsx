@@ -23,7 +23,8 @@ export default class ViewCurrent extends React.Component {
 
     renderSongs() {
         return [].map.call(this.props.currentPlaylist || [], (song, index) => {
-            let isCurrentPlayingSong = (song.file === this.props.currentSong.file),
+            let isCurrentPlayingSong = (song.file === this.props.currentSong.file) &&
+                    (index.toString() === this.props.currentSong.pos),
                 firstElem = isCurrentPlayingSong ?
                     this.renderCurrentSongAnimation():
                     song.cover,
