@@ -98,7 +98,9 @@ export function queryStatus() {
 
 function sendAction(actionName, value) {
     return csp.go(function*() {
-        let path = _.compact([webApi.action, actionName, value]).join('/');
+        let path = _.filter([webApi.action, actionName, value], (x) => {
+            return (x !== undefined && x !== null);
+        }).join('/');
         let response = yield csp.take(fetch(path));
 
         if (!response.ok) {
