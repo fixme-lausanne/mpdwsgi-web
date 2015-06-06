@@ -333,6 +333,56 @@ main .content {
   height: 250px;
 }
 
+/* Animation for the current song playing */
+.is-current-song .loader {
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.is-current-song .loader li {
+  position: absolute;
+  width: 2px;
+  height: 0;
+  background-color: white;
+  bottom: 0;
+  margin: 0;
+}
+
+
+@keyframes current-song-sequence1 {
+	0%{height: 15%;}
+	50%{height:78%;}
+	100%{height: 15%;}
+}
+
+@keyframes current-song-sequence2 {
+	0%{height: 30%;}
+	50%{height: 100%;}
+	100%{height: 30%;}
+}
+
+.is-current-song .loader li:nth-child(1) {
+  left: 0;
+  animation: current-song-sequence1 1s ease infinite;
+}
+
+.is-current-song .loader li:nth-child(2) {
+  left: 10px;
+  animation: current-song-sequence2 1s ease infinite 0.1s;
+}
+
+.is-current-song .loader li:nth-child(3) {
+  left: 20px;
+  animation: current-song-sequence1 1s ease-in-out infinite 0.2s;
+}
+
+.is-current-song .loader li:nth-child(4){
+  left: 30px;
+  animation: current-song-sequence2 1s ease-in infinite 0.3s;
+}
+
 /* ----------------------
  * Section: Bottom player
  * ----------------------

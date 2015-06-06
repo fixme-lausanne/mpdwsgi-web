@@ -27,6 +27,7 @@
     "prewatch:css": "mkdir -p static/output"
   },
   "dependencies": {
+    "classnames": "^2.1.2",
     "js-csp": "^0.4.1",
     "lodash": "^3.9.3",
     "react": "^0.13.3",

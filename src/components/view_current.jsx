@@ -2,6 +2,7 @@
 'use strict';
 
 import React from 'react';
+import classnames from 'classnames';
 import {actions} from '../api';
 
 export default class ViewCurrent extends React.Component {
@@ -9,13 +10,33 @@ export default class ViewCurrent extends React.Component {
         actions.play(songId);
     }
 
-    renderSongs(songs) {
-        return [].map.call(songs || [], (song, index) => {
+    renderCurrentSongAnimation() {
+        return (
+            <ul className="loader">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        );
+    }
+
+    renderSongs() {
+        return [].map.call(this.props.currentPlaylist || [], (song, index) => {
+            let isCurrentPlayingSong = (song.file === this.props.currentSong.file),
+                firstElem = isCurrentPlayingSong ?
+                    this.renderCurrentSongAnimation():
+                    song.cover,
+                classes = classnames({
+                    'is-current-song': isCurrentPlayingSong,
+                    song: true,
+                    row: true
+                });
             return (
-                <li className="song row"
+                <li className={classes}
                     key={`current-song-${index}`}
                     onClick={this.handleClickSong.bind(null, index)}>
-                    <div className="cover one column">{song.cover}</div>
+                    <div className="one column">{firstElem}</div>
                     <div className="title four columns">{song.title}</div>
                     <div className="six columns">
                         <div className="album">{song.album}</div>
@@ -27,10 +48,9 @@ export default class ViewCurrent extends React.Component {
     }
 
     render() {
-        let {currentPlaylist} = this.props.data;
         return (
             <ul id="view-current-songs">
-                {this.renderSongs(currentPlaylist)}
+                {this.renderSongs()}
             </ul>
         );
     }

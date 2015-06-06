@@ -162,9 +162,11 @@ export default class App extends React.Component {
     }
 
     render() {
-        let contentStyles = {
-            height: this.state.contentHeight
-        };
+        let routeHandler = React.createElement(RouteHandler, this.state),
+            contentStyles = {
+                height: this.state.contentHeight
+            };
+
         return (
             <div>
                 <ToastContainer toastMessageFactory={ToastMessageFactory}
@@ -183,7 +185,7 @@ export default class App extends React.Component {
 
                         <div className="content" ref="content"
                              style={contentStyles}>
-                            <RouteHandler data={this.state}/>
+                             {routeHandler}
                         </div>
                     </main>
                 </CSSTransitionGroup>
