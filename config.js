@@ -5,12 +5,11 @@ let baseUrl = "http://api.mpd.local";
 export const webApi = {
     baseUrl: baseUrl,
     status: `${baseUrl}/status`,
-    initial: `${baseUrl}/initial_data`,
     currentPlaylist: `${baseUrl}/playlist`,
     currentSong: `${baseUrl}/current`,
-    albums: `${baseUrl}/albums`,
-    artists: `${baseUrl}/artists`,
-    playlists: `${baseUrl}/playlists`,
+    albums: `${baseUrl}/list_albums`,
+    artists: `${baseUrl}/list_artists`,
+    playlists: `${baseUrl}/list_playlists`,
     action: `${baseUrl}/action`
 };
 

@@ -5,7 +5,19 @@ import React from 'react';
 import {formatTime} from '../utils';
 import * as _ from 'lodash';
 
+import {
+    queryArtists
+} from '../api';
+
+import csp from 'js-csp';
+
 export default class Artists extends React.Component {
+    static fetchInitialData(params) {
+        return csp.go(function*() {
+            return (yield queryArtists());
+        });
+    }
+
     renderAlbums(albums) {
         return [].map.call(Object.keys(albums || {}), (album) => {
             let songs = albums[album];
@@ -41,7 +53,7 @@ export default class Artists extends React.Component {
     }
 
     render() {
-        let {artists} = this.props.data;
+        let {artists} = this.props.initialData;
         return (
             <ul id="view-artists">
                 {this.renderArtists(artists)}

@@ -75,6 +75,45 @@ export function queryStatus() {
     });
 }
 
+export function queryAlbums() {
+    return csp.go(function*() {
+        let response = yield csp.take(fetch(webApi.albums));
+        let data = response.data;
+
+        if (!response.ok) {
+            throw response.error;
+        }
+
+        return data.albums;
+    });
+}
+
+export function queryArtists() {
+    return csp.go(function*() {
+        let response = yield csp.take(fetch(webApi.albums));
+        let data = response.data;
+
+        if (!response.ok) {
+            throw response.error;
+        }
+
+        return data.albums;
+    });
+}
+
+export function queryPlaylists() {
+    return csp.go(function*() {
+        let response = yield csp.take(fetch(webApi.playlists));
+        let data = response.data;
+
+        if (!response.ok) {
+            throw response.error;
+        }
+
+        return data.playlists;
+    });
+}
+
 function sendAction(actionName, value) {
     return csp.go(function*() {
         let path = _.filter([webApi.action, actionName, value], (x) => {

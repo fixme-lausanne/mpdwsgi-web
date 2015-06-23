@@ -3,9 +3,21 @@
 
 import React from 'react';
 import {formatTime} from '../utils';
-import {addToCurrentPlaylist} from '../api';
+
+import {
+    addToCurrentPlaylist,
+    queryAlbums
+} from '../api';
+
+import csp from 'js-csp';
 
 export default class Albums extends React.Component {
+    static fetchInitialData(params) {
+        return csp.go(function*() {
+            return (yield queryAlbums());
+        });
+    }
+
     handleClickSong(songFile, e) {
         addToCurrentPlaylist(songFile);
     }
@@ -46,11 +58,11 @@ export default class Albums extends React.Component {
     }
 
     render() {
-        let {albums} = this.props.data;
+        let {albums} = this.props.initialData;
         return (
-                <ul id="view-albums">
+            <ul id="view-albums">
                 {this.renderAlbums(albums)}
-                </ul>
+            </ul>
         );
     }
 };
