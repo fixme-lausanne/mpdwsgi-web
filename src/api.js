@@ -29,27 +29,6 @@ function insert(path, data) {
     return req('PUT', path, data);
 }
 
-export function queryInitialData() {
-    return csp.go(function*() {
-        let response = yield csp.take(fetch(webApi.initial));
-        let data = response.data;
-
-        if (!response.ok) {
-            throw response.error;
-        }
-
-        return {
-            currentSong: data.currentsong,
-            currentPlaylist: data.currentplaylist,
-            songs: data.songs,
-            playlists: data.playlists,
-            albums: _.groupBy(data.songs, 'album'),
-            artists: _.groupBy(data.songs, 'artist'),
-            status: data.status
-        };
-    });
-}
-
 export function queryCurrentPlaylist() {
     return csp.go(function*() {
         let response = yield csp.take(fetch(webApi.currentPlaylist));

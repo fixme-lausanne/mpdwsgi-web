@@ -7,8 +7,13 @@ let {CSSTransitionGroup} = React.addons;
 import Router from 'react-router';
 let {RouteHandler} = Router;
 
+import objectAssign from 'object-assign';
 import csp from 'js-csp';
-import * as api from '../api';
+
+import {
+    queryStatus,
+    queryCurrentSong
+} from '../api';
 import socket from '../socket';
 
 import {ToastContainer, ToastMessage} from 'react-toastr';
@@ -20,7 +25,9 @@ import Player from './player/Player.jsx';
 export default class App extends React.Component {
     static fetchInitialData(params) {
         return csp.go(function*() {
-            return (yield api.queryInitialData());
+            let status = yield queryStatus();
+            let currentSong = yield queryCurrentSong();
+            return {status, currentSong};
         });
     }
 
@@ -76,19 +83,11 @@ export default class App extends React.Component {
     setInitialData(initialData) {
         let {
             currentSong,
-            currentPlaylist,
-            playlists,
-            albums,
-            artists,
             status
         } = initialData;
 
         this.setState({
             currentSong,
-            currentPlaylist,
-            playlists,
-            albums,
-            artists,
             isPlaying: (status.state === 'play') ? true: false,
             currentTime: parseInt(status.elapsed, 10)
         });
@@ -104,22 +103,22 @@ export default class App extends React.Component {
         return new Map([
             ['playlist', () => {
                 csp.go(function*() {
-                    let currentPlaylist = yield api.queryCurrentPlaylist();
+                    let currentPlaylist = yield queryCurrentPlaylist();
                     this.setState({currentPlaylist});
                 }.bind(this));
             }],
 
             ['update', () => {
                 csp.go(function*() {
-                    let allData = yield api.queryInitialData();
+                    let allData = yield queryInitialData();
                     this.setInitialData(allData);
                 }.bind(this));
             }],
 
             ['player', () => {
                 csp.go(function*() {
-                    let status = yield api.queryStatus();
-                    let currentSong = yield api.queryCurrentSong();
+                    let status = yield queryStatus();
+                    let currentSong = yield queryCurrentSong();
                     let isPlaying = (!status.error && status.state == 'play');
 
                     this.setState({currentSong, isPlaying,
@@ -151,7 +150,7 @@ export default class App extends React.Component {
             addEventListener(key, value.bind(this));
         }
 
-        let initialData = this.props.initialData['appRoot'];
+        let initialData = this.props.initialData.appRoot;
         this.setInitialData(initialData);
     }
 
@@ -162,10 +161,13 @@ export default class App extends React.Component {
     }
 
     render() {
-        let routeHandler = React.createElement(RouteHandler, this.state),
-            contentStyles = {
-                height: this.state.contentHeight
-            };
+        let routeHandler = React.createElement(RouteHandler, objectAssign({
+            initialData: this.props.initialData
+        }, this.state));
+
+        let contentStyles = {
+            height: this.state.contentHeight
+        };
 
         return (
             <div>

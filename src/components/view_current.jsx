@@ -3,9 +3,18 @@
 
 import React from 'react';
 import classnames from 'classnames';
-import {actions} from '../api';
+import {actions, queryCurrentPlaylist} from '../api';
+
+import csp from 'js-csp';
 
 export default class ViewCurrent extends React.Component {
+
+    static fetchInitialData(params) {
+        return csp.go(function*() {
+            return (yield queryCurrentPlaylist());
+        });
+    }
+
     handleClickSong(songId, e) {
         actions.play(songId);
     }
@@ -21,9 +30,10 @@ export default class ViewCurrent extends React.Component {
         );
     }
 
-    renderSongs() {
-        return [].map.call(this.props.currentPlaylist || [], (song, index) => {
-            let isCurrentPlayingSong = (song.file === this.props.currentSong.file) &&
+    renderSongs(songs) {
+        return [].map.call(songs || [], (song, index) => {
+            let isCurrentPlayingSong = this.props.currentSong &&
+                    (song.file === this.props.currentSong.file) &&
                     (index.toString() === this.props.currentSong.pos),
                 firstElem = isCurrentPlayingSong ?
                     this.renderCurrentSongAnimation():
@@ -45,13 +55,14 @@ export default class ViewCurrent extends React.Component {
                     </div>
                 </li>
             );
-        });
+        }, this);
     }
 
     render() {
+        let {current} = this.props.initialData;
         return (
             <ul id="view-current-songs">
-                {this.renderSongs()}
+                {this.renderSongs(current)}
             </ul>
         );
     }
