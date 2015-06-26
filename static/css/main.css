@@ -46,6 +46,14 @@ a, a:hover {
   user-drag: none;
 }
 
+.disabled {
+  color: rgba(0, 0, 0, 0.32);
+}
+
+.disabled a {
+  pointer-events: none;
+}
+
 /* -------
  * Spinner
  * From [tobiasahlin's SpinKit](https://github.com/tobiasahlin/SpinKit)

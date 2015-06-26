@@ -5,6 +5,8 @@ import React from 'react';
 import Router from 'react-router';
 var {Link} = Router;
 
+import Tooltip from 'react-tooltip';
+
 export default class SideMenu extends React.Component {
     render() {
         return (
@@ -24,15 +26,24 @@ export default class SideMenu extends React.Component {
                         <li><Link to="current" activeClassName="active">
                             Current
                         </Link></li>
-                        <li><Link to="albums" activeClassName="active">
-                            Albums
-                        </Link></li>
-                        <li><Link to="artists" activeClassName="active">
-                            Artists
-                        </Link></li>
-                        <li><Link to="playlists" activeClassName="active">
-                            Playlists
-                        </Link></li>
+                        <li className="disabled"
+                            data-tip="Coming soon">
+                            <Link to="albums" activeClassName="active">
+                                Albums
+                            </Link>
+                        </li>
+                        <li className="disabled"
+                            data-tip="Coming soon">
+                            <Link to="artists" activeClassName="active">
+                                Artists
+                            </Link>
+                        </li>
+                        <li className="disabled"
+                            data-tip="Coming soon">
+                            <Link to="playlists" activeClassName="active">
+                                Playlists
+                            </Link>
+                        </li>
                     </ul>
                 </nav>
             </aside>
