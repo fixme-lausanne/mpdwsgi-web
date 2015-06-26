@@ -21,6 +21,7 @@ let ToastMessageFactory = React.createFactory(ToastMessage.animation);
 
 import SideMenu from './SideMenu.jsx';
 import Player from './player/Player.jsx';
+import Upload from './Upload.jsx';
 
 export default class App extends React.Component {
     static fetchInitialData(params) {
@@ -193,7 +194,8 @@ export default class App extends React.Component {
                 </CSSTransitionGroup>
                 <Player ref="player" song={this.state.currentSong}
                         currentTime={this.state.currentTime}
-                        isPlaying={this.state.isPlaying}/>
+            isPlaying={this.state.isPlaying}/>
+                <Upload />
             </div>
         );
     }

@@ -4,21 +4,29 @@ import request from 'superagent';
 import _ from 'lodash';
 import {webApi} from '../config';
 
-function req(method, path, data) {
+function req(method, path, data, customBehavior) {
     var ch = csp.chan();
-    request(method, path).send(data).end((err, res) => {
-        if (err) {
-            csp.putAsync(ch, {
-                error: err
-            });
-        } else {
-            csp.putAsync(ch, {
-                data: res.body,
-                ok: true
-            });
-        }
-    });
+    var r = request(method, path);
+    if (customBehavior) {
+        customBehavior(r, method, path, data);
+    } else {
+        r.send(data);
+    }
+    r.end(handleResult.bind(null, ch));
     return ch;
+}
+
+function handleResult(ch, err, res) {
+    if (err) {
+        csp.putAsync(ch, {
+            error: err
+        });
+    } else {
+        csp.putAsync(ch, {
+            data: res.body,
+            ok: true
+        });
+    }
 }
 
 function fetch(path) {
@@ -27,6 +35,14 @@ function fetch(path) {
 
 function insert(path, data) {
     return req('PUT', path, data);
+}
+
+function uploadFiles(path, files) {
+    return req('POST', path, files, (r) => {
+        [].forEach.call(files, (f) => {
+            r.attach('file[]', f, f.name);
+        });
+    });
 }
 
 export function queryCurrentPlaylist() {
@@ -111,6 +127,18 @@ export function queryPlaylists() {
         }
 
         return data.playlists;
+    });
+}
+
+export function sendFiles(files) {
+    return csp.go(function*() {
+        let response = yield csp.take(uploadFiles(webApi.file, files));
+
+        if (!response.ok) {
+            throw response.error;
+        }
+
+        return response.data;
     });
 }
 
