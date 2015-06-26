@@ -522,3 +522,40 @@ main .content {
   width: 100%;
   background-color: rgb(106, 106, 108);
 }
+
+/*
+ * Section: file upload area
+ */
+
+.dropzone {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+
+  font-size: 4rem;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.73);
+
+  text-align: center;
+
+  border: none;
+  box-sizing: border-box;
+  padding: 10rem;
+}
+
+.dropzone > div {
+  margin: auto;
+  height: 100%;
+  max-width: 600px;
+
+  box-sizing: border-box;
+  border-radius: 10px;
+  border-style: dashed;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

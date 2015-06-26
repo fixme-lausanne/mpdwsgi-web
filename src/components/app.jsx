@@ -34,8 +34,16 @@ export default class App extends React.Component {
 
     constructor(props) {
         super(props);
+
+        // yeah, sorry for the ugly (not so) global state :-(
+        this.global = {
+            dragCounter: 0
+        };
+
         this.state = {
             contentHeight: null,
+
+            isDragging: false,
 
             currentSong: null,
             currentPlaylist: null,
@@ -81,6 +89,24 @@ export default class App extends React.Component {
         });
     }
 
+    incDragCounter() {
+        this.global.dragCounter += 1;
+        this.setState({isDragging: true});
+        console.log(this.global.dragCounter);
+    }
+
+    decDragCounter() {
+        this.global.dragCounter -= 1;
+        if (this.global.dragCounter <= 0) {
+            this.hideDropzone();
+        }
+        console.log(this.global.dragCounter);
+    }
+
+    hideDropzone() {
+        this.setState({isDragging: false});
+    }
+
     setInitialData(initialData) {
         let {
             currentSong,
@@ -96,7 +122,11 @@ export default class App extends React.Component {
 
     get events() {
         return new Map([
-            ['resize', this.handleResize]
+            ['resize', this.handleResize],
+            ['dragenter', this.incDragCounter],
+            ['dragleave', this.decDragCounter],
+            ['dragend', this.decDragCounter],
+            ['drop', this.hideDropzone]
         ]);
     }
 
@@ -188,14 +218,14 @@ export default class App extends React.Component {
 
                         <div className="content" ref="content"
                              style={contentStyles}>
-                             {routeHandler}
+                            {routeHandler}
                         </div>
                     </main>
                 </CSSTransitionGroup>
                 <Player ref="player" song={this.state.currentSong}
                         currentTime={this.state.currentTime}
-            isPlaying={this.state.isPlaying}/>
-                <Upload />
+                        isPlaying={this.state.isPlaying}/>
+                <Upload visible={this.state.isDragging}/>
             </div>
         );
     }
