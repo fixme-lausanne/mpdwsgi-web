@@ -168,3 +168,11 @@ const actions = listActions.reduce((acc, actionName) => {
 }, {});
 
 export {actions};
+
+export function setVolume(value) {
+  return csp.go(function*() {
+    let response = yield csp.take(update(webApi.volume,
+                                         'volume=' + value));
+    return !!response.ok;
+  });
+}

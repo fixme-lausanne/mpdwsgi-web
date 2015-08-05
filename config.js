@@ -11,7 +11,8 @@ export const webApi = {
     artists: `${baseUrl}/list_artists`,
     playlists: `${baseUrl}/list_playlists`,
     action: `${baseUrl}/action`,
-    file: `${baseUrl}/file`
+    file: `${baseUrl}/file`,
+    volume: `${baseUrl}/volume`
 };
 
 let baseUrlWS = "ws://api.mpd.local";

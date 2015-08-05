@@ -7,6 +7,7 @@ import {actions} from '../../api';
 import Info from './Info.jsx';
 import Actions from './Actions.jsx';
 import ProgressBar from './ProgressBar.jsx';
+import VolumeBar from './VolumeBar.jsx';
 
 export default class Player extends React.Component {
     constructor(props) {
@@ -55,7 +56,8 @@ export default class Player extends React.Component {
                      song: this.props.song,
                      currentTime: this.props.currentTime,
                      onClick: actions.seek
-                 })]: null;
+                 }),
+                 React.createElement(VolumeBar)]: null;
         return (
             <div className="bottom-player no-select no-drag">
                 {playerContent}
