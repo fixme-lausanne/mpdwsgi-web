@@ -34,7 +34,11 @@ function fetch(path) {
 }
 
 function insert(path, data) {
-    return req('PUT', path, data);
+    return req('POST', path, data);
+}
+
+function update(path, data) {
+  return req('PUT', path, data);
 }
 
 function uploadFiles(path, files) {
